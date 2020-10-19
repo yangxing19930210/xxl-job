@@ -91,8 +91,7 @@
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu" role="menu">
-                            <li id="updatePwd"><a href="javascript:">${I18n.change_pwd}</a></li>
-                            <li id="logoutBtn"><a href="javascript:">${I18n.logout_btn}</a></li>
+                            <li><a href="${request.contextPath}/login/out/index">${I18n.logout_btn}</a></li>
                         </ul>
                     </li>
                 </ul>

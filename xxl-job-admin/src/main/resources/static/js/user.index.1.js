@@ -32,14 +32,6 @@ $(function () {
                 "width": '20%'
             },
             {
-                "data": 'password',
-                "visible": true,
-                "width": '20%',
-                "render": function (data, type, row) {
-                    return '*********';
-                }
-            },
-            {
                 "data": 'role',
                 "visible": true,
                 "width": '10%',
@@ -162,27 +154,6 @@ $(function () {
         errorElement: 'span',
         errorClass: 'help-block',
         focusInvalid: true,
-        rules: {
-            username: {
-                required: true,
-                rangelength: [4, 20],
-                myValid01: true
-            },
-            password: {
-                required: true,
-                rangelength: [4, 20]
-            }
-        },
-        messages: {
-            username: {
-                required: I18n.system_please_input + I18n.user_username,
-                rangelength: I18n.system_lengh_limit + "[4-20]"
-            },
-            password: {
-                required: I18n.system_please_input + I18n.user_password,
-                rangelength: I18n.system_lengh_limit + "[4-20]"
-            }
-        },
         highlight: function (element) {
             $(element).closest('.form-group').addClass('has-error');
         },
@@ -202,7 +173,6 @@ $(function () {
 
             var paramData = {
                 "username": $("#addModal .form input[name=username]").val(),
-                "password": $("#addModal .form input[name=password]").val(),
                 "role": $("#addModal .form input[name=role]:checked").val(),
                 "permission": permissionArr.join(',')
             };
@@ -253,7 +223,6 @@ $(function () {
         // base data
         $("#updateModal .form input[name='id']").val(row.id);
         $("#updateModal .form input[name='username']").val(row.username);
-        $("#updateModal .form input[name='password']").val('');
         $("#updateModal .form input[name='role'][value='" + row.role + "']").click();
         var permissionArr = [];
         if (row.permission) {
@@ -294,7 +263,6 @@ $(function () {
             var paramData = {
                 "id": $("#updateModal .form input[name=id]").val(),
                 "username": $("#updateModal .form input[name=username]").val(),
-                "password": $("#updateModal .form input[name=password]").val(),
                 "role": $("#updateModal .form input[name=role]:checked").val(),
                 "permission": permissionArr.join(',')
             };

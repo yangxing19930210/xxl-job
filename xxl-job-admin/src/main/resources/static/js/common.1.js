@@ -9,7 +9,7 @@ $(function () {
         }, function (index) {
             layer.close(index);
 
-            $.post(base_url + "/logout", function (data, status) {
+            $.post(base_url + "/login/out/index", function (data, status) {
                 if (data.code == "200") {
                     layer.msg(I18n.logout_success);
                     setTimeout(function () {

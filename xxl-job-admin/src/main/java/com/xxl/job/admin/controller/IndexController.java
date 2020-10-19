@@ -51,15 +51,6 @@ public class IndexController {
         return chartInfo;
     }
 
-    @RequestMapping("/toLogin")
-    @PermissionLimit(limit = false)
-    public String toLogin(HttpServletRequest request, HttpServletResponse response) {
-        if (loginService.ifLogin(request, response) != null) {
-            return "redirect:/";
-        }
-        return "login";
-    }
-
     @RequestMapping(value = "login", method = RequestMethod.POST)
     @ResponseBody
     @PermissionLimit(limit = false)

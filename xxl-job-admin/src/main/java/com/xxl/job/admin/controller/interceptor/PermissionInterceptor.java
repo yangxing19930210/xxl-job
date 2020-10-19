@@ -1,5 +1,7 @@
 package com.xxl.job.admin.controller.interceptor;
 
+import java.io.PrintWriter;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -45,8 +47,11 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
         if (needLogin) {
             XxlJobUser loginUser = loginService.ifLogin(request, response);
             if (loginUser == null) {
-                response.sendRedirect(request.getContextPath() + "/toLogin");
-                // request.getRequestDispatcher("/toLogin").forward(request, response);
+                response.setCharacterEncoding("UTF-8");
+                response.setContentType("text/html; charset=utf-8");
+                try (PrintWriter writer = response.getWriter()) {
+                    writer.print("无管理权限请联系管理员");
+                }
                 return false;
             }
             if (needAdminuser && loginUser.getRole() != 1) {
