@@ -36,7 +36,7 @@ $(function () {
         startDate: rangesConf[I18n.daterangepicker_ranges_recent_week][0],
         endDate: rangesConf[I18n.daterangepicker_ranges_recent_week][1]
     }, function (start, end, label) {
-        freshChartDate(start, end);
+        freshChartDate(start, end, $("#triggerName").val());
     });
     freshChartDate(rangesConf[I18n.daterangepicker_ranges_recent_week][0], rangesConf[I18n.daterangepicker_ranges_recent_week][1]);
 
@@ -46,13 +46,14 @@ $(function () {
      * @param startDate
      * @param endDate
      */
-    function freshChartDate(startDate, endDate) {
+    function freshChartDate(startDate, endDate, triggerName) {
         $.ajax({
             type: 'POST',
             url: base_url + '/chartInfo',
             data: {
                 'startDate': startDate.format('YYYY-MM-DD HH:mm:ss'),
-                'endDate': endDate.format('YYYY-MM-DD HH:mm:ss')
+                'endDate': endDate.format('YYYY-MM-DD HH:mm:ss'),
+                'triggerName': triggerName
             },
             dataType: "json",
             success: function (data) {

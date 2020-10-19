@@ -103,6 +103,7 @@
 
                             <!-- tools box -->
                             <div class="pull-right box-tools">
+                                <input id="triggerName"/>
                                 <button type="button" class="btn btn-primary btn-sm daterange pull-right"
                                         data-toggle="tooltip" id="filterTime">
                                     <i class="fa fa-calendar"></i>

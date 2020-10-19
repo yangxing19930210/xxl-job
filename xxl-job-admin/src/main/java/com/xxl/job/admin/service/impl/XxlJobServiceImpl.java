@@ -345,7 +345,7 @@ public class XxlJobServiceImpl implements XxlJobService {
     }
 
     @Override
-    public ReturnT<Map<String, Object>> chartInfo(Date startDate, Date endDate) {
+    public ReturnT<Map<String, Object>> chartInfo(Date startDate, Date endDate, String triggerName) {
 
         // process
         List<String> triggerDayList = new ArrayList<String>();
@@ -356,7 +356,7 @@ public class XxlJobServiceImpl implements XxlJobService {
         int triggerCountSucTotal = 0;
         int triggerCountFailTotal = 0;
 
-        List<XxlJobLogReport> logReportList = xxlJobLogReportDao.queryLogReport(startDate, endDate);
+        List<XxlJobLogReport> logReportList = xxlJobLogReportDao.queryLogReport(startDate, endDate, triggerName);
 
         if (logReportList != null && logReportList.size() > 0) {
             for (XxlJobLogReport item : logReportList) {

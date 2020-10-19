@@ -8,9 +8,18 @@ public class XxlJobLogReport {
 
     private Date triggerDay;
 
+    private String triggerName;
     private int runningCount;
     private int sucCount;
     private int failCount;
+
+    public String getTriggerName() {
+        return triggerName;
+    }
+
+    public void setTriggerName(String triggerName) {
+        this.triggerName = triggerName;
+    }
 
     public int getId() {
         return id;

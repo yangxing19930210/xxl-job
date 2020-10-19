@@ -36,7 +36,7 @@ public interface XxlJobLogDao {
 
     public int delete(@Param("jobId") int jobId);
 
-    public Map<String, Object> findLogReport(@Param("from") Date from, @Param("to") Date to);
+    public List<Map<String, Object>> findLogReport(@Param("from") Date from, @Param("to") Date to);
 
     public List<Long> findClearLogIds(@Param("jobGroup") int jobGroup, @Param("jobId") int jobId,
         @Param("clearBeforeTime") Date clearBeforeTime, @Param("clearBeforeNum") int clearBeforeNum,

@@ -9,6 +9,7 @@
         <result column="running_count" property="runningCount"/>
         <result column="suc_count" property="sucCount"/>
         <result column="fail_count" property="failCount"/>
+        <result column="trigger_name" property="triggerName"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -16,7 +17,8 @@
 		t.trigger_day,
 		t.running_count,
 		t.suc_count,
-		t.fail_count
+		t.fail_count,
+		t.trigger_name
 	</sql>
 
     <insert id="save" parameterType="com.xxl.job.admin.core.model.XxlJobLogReport" useGeneratedKeys="true"
@@ -25,12 +27,14 @@
         `trigger_day`,
         `running_count`,
         `suc_count`,
-        `fail_count`
+        `fail_count`,
+        'trigger_name'
         ) VALUES (
         #{triggerDay},
         #{runningCount},
         #{sucCount},
-        #{failCount}
+        #{failCount},
+        #{triggerName}
         );
         <!--<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
             SELECT LAST_INSERT_ID()
@@ -41,7 +45,8 @@
         UPDATE xxl_job_log_report
         SET `running_count` = #{runningCount},
         	`suc_count` = #{sucCount},
-        	`fail_count` = #{failCount}
+        	`fail_count` = #{failCount},
+        	 `trigger_name`=#{triggerName}
         WHERE `trigger_day` = #{triggerDay}
     </update>
 
@@ -50,6 +55,7 @@
         <include refid="Base_Column_List"/>
         FROM xxl_job_log_report AS t
         WHERE t.trigger_day between #{triggerDayFrom} and #{triggerDayTo}
+        AND t.trigger_name=#{triggerName}
         ORDER BY t.trigger_day ASC
     </select>
 

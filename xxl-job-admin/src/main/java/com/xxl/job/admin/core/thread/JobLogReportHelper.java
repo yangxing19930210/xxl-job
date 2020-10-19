@@ -68,31 +68,34 @@ public class JobLogReportHelper {
                             xxlJobLogReport.setSucCount(0);
                             xxlJobLogReport.setFailCount(0);
 
-                            Map<String, Object> triggerCountMap =
+                            List<Map<String, Object>> triggerCountMaps =
                                 XxlJobAdminConfig.getAdminConfig().getXxlJobLogDao().findLogReport(todayFrom, todayTo);
-                            if (triggerCountMap != null && triggerCountMap.size() > 0) {
-                                int triggerDayCount = triggerCountMap.containsKey("triggerDayCount")
-                                    ? Integer.valueOf(String.valueOf(triggerCountMap.get("triggerDayCount"))) : 0;
-                                int triggerDayCountRunning = triggerCountMap.containsKey("triggerDayCountRunning")
-                                    ? Integer.valueOf(String.valueOf(triggerCountMap.get("triggerDayCountRunning")))
-                                    : 0;
-                                int triggerDayCountSuc = triggerCountMap.containsKey("triggerDayCountSuc")
-                                    ? Integer.valueOf(String.valueOf(triggerCountMap.get("triggerDayCountSuc"))) : 0;
-                                int triggerDayCountFail = triggerDayCount - triggerDayCountRunning - triggerDayCountSuc;
+                            for (Map<String, Object> triggerCountMap : triggerCountMaps) {
+                                if (triggerCountMap != null && triggerCountMap.size() > 0) {
+                                    int triggerDayCount = triggerCountMap.containsKey("triggerDayCount")
+                                        ? Integer.valueOf(String.valueOf(triggerCountMap.get("triggerDayCount"))) : 0;
+                                    int triggerDayCountRunning = triggerCountMap.containsKey("triggerDayCountRunning")
+                                        ? Integer.valueOf(String.valueOf(triggerCountMap.get("triggerDayCountRunning")))
+                                        : 0;
+                                    int triggerDayCountSuc = triggerCountMap.containsKey("triggerDayCountSuc")
+                                        ? Integer.valueOf(String.valueOf(triggerCountMap.get("triggerDayCountSuc")))
+                                        : 0;
+                                    int triggerDayCountFail =
+                                        triggerDayCount - triggerDayCountRunning - triggerDayCountSuc;
+                                    xxlJobLogReport.setTriggerName(String.valueOf(triggerCountMap.get("triggerName")));
+                                    xxlJobLogReport.setRunningCount(triggerDayCountRunning);
+                                    xxlJobLogReport.setSucCount(triggerDayCountSuc);
+                                    xxlJobLogReport.setFailCount(triggerDayCountFail);
+                                }
 
-                                xxlJobLogReport.setRunningCount(triggerDayCountRunning);
-                                xxlJobLogReport.setSucCount(triggerDayCountSuc);
-                                xxlJobLogReport.setFailCount(triggerDayCountFail);
-                            }
-
-                            // do refresh
-                            int ret =
-                                XxlJobAdminConfig.getAdminConfig().getXxlJobLogReportDao().update(xxlJobLogReport);
-                            if (ret < 1) {
-                                XxlJobAdminConfig.getAdminConfig().getXxlJobLogReportDao().save(xxlJobLogReport);
+                                // do refresh
+                                int ret =
+                                    XxlJobAdminConfig.getAdminConfig().getXxlJobLogReportDao().update(xxlJobLogReport);
+                                if (ret < 1) {
+                                    XxlJobAdminConfig.getAdminConfig().getXxlJobLogReportDao().save(xxlJobLogReport);
+                                }
                             }
                         }
-
                     } catch (Exception e) {
                         if (!toStop) {
                             logger.error(">>>>>>>>>>> xxl-job, job log report thread error:{}", e);
