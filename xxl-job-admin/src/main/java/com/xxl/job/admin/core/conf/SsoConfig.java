@@ -25,7 +25,7 @@ public class SsoConfig implements DisposableBean {
         registration.setFilter(new WebFilter());
         registration.addInitParameter(Conf.SSO_SERVER, "http://mm.sekorm.com:8999/sekorm-sso-server");
         registration.addInitParameter(Conf.SSO_EXCLUDED_PATHS,
-            "/**/css/**,/**/fonts/**,/**/images/**,/**/img/**,/**/js/**,/**/plugins/**,/**/download**");
+            "/api/**,/**/css/**,/**/fonts/**,/**/images/**,/**/img/**,/**/js/**,/**/plugins/**,/**/download**");
         registration.addInitParameter(Conf.SSO_LOGOUT_PATH, "/login/out");
         registration.addInitParameter(Conf.SSO_INDEX, "/login/out/index");
         return registration;

@@ -24,7 +24,7 @@ public class UserSessionFilter implements Filter {
     private static final ObjectMapper MAPPER = new ObjectMapper();
     private static final AntPathMatcher antPathMatcher = new AntPathMatcher();
     private static final String excludedPaths =
-        "/**/css/**,/**/fonts/**,/**/images/**,/**/img/**,/**/js/**,/**/plugins/**,/**/download**";
+        "/api/**,/**/css/**,/**/fonts/**,/**/images/**,/**/img/**,/**/js/**,/**/plugins/**,/**/download**";
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {}
