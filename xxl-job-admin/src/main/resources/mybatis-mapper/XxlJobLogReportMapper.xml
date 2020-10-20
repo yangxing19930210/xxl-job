@@ -45,8 +45,7 @@
         UPDATE xxl_job_log_report
         SET `running_count` = #{runningCount},
         	`suc_count` = #{sucCount},
-        	`fail_count` = #{failCount},
-        	 `trigger_name`=#{triggerName}
+        	`fail_count` = #{failCount}
         WHERE `trigger_day` = #{triggerDay} and `trigger_name`=#{triggerName}
     </update>
 
