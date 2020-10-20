@@ -47,7 +47,7 @@
         	`suc_count` = #{sucCount},
         	`fail_count` = #{failCount},
         	 `trigger_name`=#{triggerName}
-        WHERE `trigger_day` = #{triggerDay}
+        WHERE `trigger_day` = #{triggerDay} and `trigger_name`=#{triggerName}
     </update>
 
     <select id="queryLogReport" resultMap="XxlJobLogReport">
