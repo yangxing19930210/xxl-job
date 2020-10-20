@@ -28,7 +28,7 @@
         `running_count`,
         `suc_count`,
         `fail_count`,
-        'trigger_name'
+        `trigger_name`
         ) VALUES (
         #{triggerDay},
         #{runningCount},

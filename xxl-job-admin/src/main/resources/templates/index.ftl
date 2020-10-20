@@ -98,21 +98,26 @@
                 <div class="col-md-12">
                     <div class="box">
                         <div class="box-header with-border">
-                            <h3 class="box-title">${I18n.job_dashboard_report}</h3>
-                            <#--<input type="text" class="form-control" id="filterTime" readonly >-->
-
                             <!-- tools box -->
-                            <div class="pull-right box-tools">
-                                <input id="triggerName"/>
+
+                            <div class="col-xs-6">
+                                <h3 class="box-title">${I18n.job_dashboard_report}</h3>
+                                <#--<input type="text" class="form-control" id="filterTime" readonly >-->
+                            </div>
+                            <div class="col-xs-5">
+                                <div class="input-group">
+                                    <span class="input-group-addon">JobHandler（glue为GLUE模式）</span>
+                                    <input type="text" class="form-control" id="triggerName" autocomplete="on"
+                                           placeholder="请输入JobHandler">
+                                </div>
+                            </div>
+                            <div class="col-xs-1">
                                 <button type="button" class="btn btn-primary btn-sm daterange pull-right"
                                         data-toggle="tooltip" id="filterTime">
                                     <i class="fa fa-calendar"></i>
                                 </button>
-                                <#--<button type="button" class="btn btn-primary btn-sm pull-right" data-widget="collapse" data-toggle="tooltip" title="" style="margin-right: 5px;" data-original-title="Collapse">
-                                    <i class="fa fa-minus"></i>
-                                </button>-->
                             </div>
-                            <!-- /. tools -->
+
 
                         </div>
                         <div class="box-body">

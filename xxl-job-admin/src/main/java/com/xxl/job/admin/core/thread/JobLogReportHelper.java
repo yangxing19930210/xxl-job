@@ -82,7 +82,11 @@ public class JobLogReportHelper {
                                         : 0;
                                     int triggerDayCountFail =
                                         triggerDayCount - triggerDayCountRunning - triggerDayCountSuc;
-                                    xxlJobLogReport.setTriggerName(String.valueOf(triggerCountMap.get("triggerName")));
+                                    String triggerName = ("".equals(triggerCountMap.get("triggerName"))
+                                        || triggerCountMap.get("triggerName") == null) ? "glue"
+                                            : String.valueOf(triggerCountMap.get("triggerName"));
+
+                                    xxlJobLogReport.setTriggerName(triggerName);
                                     xxlJobLogReport.setRunningCount(triggerDayCountRunning);
                                     xxlJobLogReport.setSucCount(triggerDayCountSuc);
                                     xxlJobLogReport.setFailCount(triggerDayCountFail);
