@@ -355,9 +355,12 @@ public class XxlJobServiceImpl implements XxlJobService {
         int triggerCountRunningTotal = 0;
         int triggerCountSucTotal = 0;
         int triggerCountFailTotal = 0;
-
-        List<XxlJobLogReport> logReportList = xxlJobLogReportDao.queryLogReport(startDate, endDate, triggerName);
-
+        List<XxlJobLogReport> logReportList = null;
+        if (triggerName != null && !"".equals(triggerName)) {
+            logReportList = xxlJobLogReportDao.queryLogReport(startDate, endDate, triggerName);
+        } else {
+            logReportList = xxlJobLogReportDao.queryLogReportNotTriggerName(startDate, endDate);
+        }
         if (logReportList != null && logReportList.size() > 0) {
             for (XxlJobLogReport item : logReportList) {
                 String day = DateUtil.formatDate(item.getTriggerDay());

@@ -58,6 +58,19 @@
         ORDER BY t.trigger_day ASC
     </select>
 
+    <select id="queryLogReportNotTriggerName" resultMap="XxlJobLogReport">
+        SELECT
+			t.trigger_day,
+			sum(t.running_count) running_count,
+			sum(t.suc_count) suc_count,
+			sum(t.fail_count) fail_count
+        FROM xxl_job_log_report AS t
+        WHERE t.trigger_day between #{triggerDayFrom} and #{triggerDayTo}
+        group by t.trigger_day
+        ORDER BY t.trigger_day ASC
+    </select>
+
+
     <select id="queryLogReportTotal" resultMap="XxlJobLogReport">
 		SELECT
 			SUM(running_count) running_count,

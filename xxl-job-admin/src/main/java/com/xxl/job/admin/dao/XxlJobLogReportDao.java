@@ -23,6 +23,9 @@ public interface XxlJobLogReportDao {
     public List<XxlJobLogReport> queryLogReport(@Param("triggerDayFrom") Date triggerDayFrom,
         @Param("triggerDayTo") Date triggerDayTo, @Param("triggerName") String triggerName);
 
+    public List<XxlJobLogReport> queryLogReportNotTriggerName(@Param("triggerDayFrom") Date triggerDayFrom,
+        @Param("triggerDayTo") Date triggerDayTo);
+
     public XxlJobLogReport queryLogReportTotal();
 
 }
