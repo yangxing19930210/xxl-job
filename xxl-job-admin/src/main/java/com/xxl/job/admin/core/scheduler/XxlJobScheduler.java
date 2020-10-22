@@ -64,6 +64,9 @@ public class XxlJobScheduler {
         // admin log report start
         JobLogReportHelper.getInstance().start();
 
+        // start job time clear
+        JobMailTimeHelper.getInstance().start();
+
         // start-schedule
         JobScheduleHelper.getInstance().start();
 

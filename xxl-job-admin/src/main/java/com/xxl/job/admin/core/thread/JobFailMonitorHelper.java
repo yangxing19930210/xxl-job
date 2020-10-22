@@ -1,6 +1,8 @@
 package com.xxl.job.admin.core.thread;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
@@ -19,6 +21,7 @@ import com.xxl.job.admin.core.util.I18nUtil;
  */
 public class JobFailMonitorHelper {
     private static Logger logger = LoggerFactory.getLogger(JobFailMonitorHelper.class);
+    private static Map<String, Integer> stringIntegerMap = new HashMap<>();
 
     private static JobFailMonitorHelper instance = new JobFailMonitorHelper();
     private Thread monitorThread;
@@ -28,6 +31,21 @@ public class JobFailMonitorHelper {
 
     public static JobFailMonitorHelper getInstance() {
         return instance;
+    }
+
+    public static Map<String, Integer> getStringIntegerMap() {
+        return stringIntegerMap;
+    }
+
+    public void toStop() {
+        toStop = true;
+        // interrupt and wait
+        monitorThread.interrupt();
+        try {
+            monitorThread.join();
+        } catch (InterruptedException e) {
+            logger.error(e.getMessage(), e);
+        }
     }
 
     public void start() {
@@ -70,8 +88,19 @@ public class JobFailMonitorHelper {
                                 int newAlarmStatus = 0; // 告警状态：0-默认、-1=锁定状态、1-无需告警、2-告警成功、3-告警失败
                                 if (info != null && info.getAlarmEmail() != null
                                     && info.getAlarmEmail().trim().length() > 0) {
-                                    boolean alarmResult =
-                                        XxlJobAdminConfig.getAdminConfig().getJobAlarmer().alarm(info, log);
+                                    boolean alarmResult = true;
+                                    Integer count = 0;
+                                    if (stringIntegerMap.get(log.getTriggerMsg()) == null) {
+                                        count = 1;
+                                    } else {
+                                        count = ((Integer)stringIntegerMap.get(log.getTriggerMsg())) + 1;
+                                    }
+                                    stringIntegerMap.put(log.getTriggerMsg(), count);
+                                    if (count <= 5) {
+                                        alarmResult =
+                                            XxlJobAdminConfig.getAdminConfig().getJobAlarmer().alarm(info, log);
+
+                                    }
                                     newAlarmStatus = alarmResult ? 2 : 3;
                                 } else {
                                     newAlarmStatus = 1;
@@ -106,16 +135,4 @@ public class JobFailMonitorHelper {
         monitorThread.setName("xxl-job, admin JobFailMonitorHelper");
         monitorThread.start();
     }
-
-    public void toStop() {
-        toStop = true;
-        // interrupt and wait
-        monitorThread.interrupt();
-        try {
-            monitorThread.join();
-        } catch (InterruptedException e) {
-            logger.error(e.getMessage(), e);
-        }
-    }
-
 }
