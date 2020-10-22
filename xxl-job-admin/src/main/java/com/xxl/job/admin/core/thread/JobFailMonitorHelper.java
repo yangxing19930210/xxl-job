@@ -90,14 +90,15 @@ public class JobFailMonitorHelper {
                                     && info.getAlarmEmail().trim().length() > 0) {
                                     boolean alarmResult = true;
                                     Integer count = 0;
-                                    if (stringIntegerMap
-                                        .get(info.getAlarmEmail().concat(log.getTriggerMsg())) == null) {
+                                    if (stringIntegerMap.get(info.getAlarmEmail().concat(String.valueOf(log.getJobId()))
+                                        .concat(log.getTriggerMsg())) == null) {
                                         count = 1;
                                     } else {
-                                        count = ((Integer)stringIntegerMap
-                                            .get(info.getAlarmEmail().concat(log.getTriggerMsg()))) + 1;
+                                        count = ((Integer)stringIntegerMap.get(info.getAlarmEmail()
+                                            .concat(String.valueOf(log.getJobId())).concat(log.getTriggerMsg()))) + 1;
                                     }
-                                    stringIntegerMap.put(info.getAlarmEmail().concat(log.getTriggerMsg()), count);
+                                    stringIntegerMap.put(info.getAlarmEmail()
+                                        .concat(String.valueOf(log.getJobId()).concat(log.getTriggerMsg())), count);
                                     if (count <= 5) {
                                         alarmResult =
                                             XxlJobAdminConfig.getAdminConfig().getJobAlarmer().alarm(info, log);
