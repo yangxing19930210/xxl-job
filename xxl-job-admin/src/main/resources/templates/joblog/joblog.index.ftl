@@ -90,6 +90,7 @@
                                 <thead>
                                 <tr>
                                     <th name="jobId">${I18n.jobinfo_field_id}</th>
+                                    <th name="jobName">job名称</th>
                                     <th name="jobGroup">jobGroup</th>
                                     <#--<th name="executorAddress" >执行器地址</th>
                                     <th name="glueType" >运行模式</th>

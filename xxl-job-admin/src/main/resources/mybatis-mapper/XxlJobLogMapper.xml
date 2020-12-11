@@ -24,6 +24,8 @@
         <result column="handle_msg" property="handleMsg"/>
 
         <result column="alarm_status" property="alarmStatus"/>
+
+        <result column="job_name" property="jobName"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -46,7 +48,22 @@
 
     <select id="pageList" resultMap="XxlJobLog">
         SELECT
-        <include refid="Base_Column_List"/>
+        t.id,
+        t.job_group,
+        t.job_id,
+        t.executor_address,
+        t.executor_handler,
+        t.executor_param,
+        t.executor_sharding_param,
+        t.executor_fail_retry_count,
+        t.trigger_time,
+        t.trigger_code,
+        t.trigger_msg,
+        t.handle_time,
+        t.handle_code,
+        t.handle_msg,
+        t.alarm_status,
+        (select t2.job_desc from xxl_job_info t2 where t2.id=t.job_id) job_name
         FROM xxl_job_log AS t
         <trim prefix="WHERE" prefixOverrides="AND | OR">
             <if test="jobId==0 and jobGroup gt 0">

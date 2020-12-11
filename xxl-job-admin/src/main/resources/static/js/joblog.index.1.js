@@ -111,10 +111,17 @@ $(function () {
                     return '<a class="logTips" href="javascript:;" >' + row.jobId + '<span style="display:none;">' + temp + '</span></a>';
                 }
             },
+            {
+                "data": 'jobName',
+                "width": '10%',
+                "render": function (data, type, row) {
+                    return data;
+                }
+            },
             {"data": 'jobGroup', "visible": false},
             {
                 "data": 'triggerTime',
-                "width": '20%',
+                "width": '15%',
                 "render": function (data, type, row) {
                     return data ? moment(new Date(data)).format("YYYY-MM-DD HH:mm:ss") : "";
                 }
@@ -143,7 +150,7 @@ $(function () {
             },
             {
                 "data": 'handleTime',
-                "width": '20%',
+                "width": '15%',
                 "render": function (data, type, row) {
                     return data ? moment(new Date(data)).format("YYYY-MM-DD HH:mm:ss") : "";
                 }
