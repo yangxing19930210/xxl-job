@@ -106,9 +106,9 @@
                             </div>
                             <div class="col-xs-5">
                                 <div class="input-group">
-                                    <span class="input-group-addon">JobHandler（glue为GLUE模式）</span>
+                                    <span class="input-group-addon">任务ID</span>
                                     <input type="text" class="form-control" id="triggerName" autocomplete="on"
-                                           placeholder="请输入JobHandler">
+                                           placeholder="请输入任务ID">
                                 </div>
                             </div>
                             <div class="col-xs-1">
