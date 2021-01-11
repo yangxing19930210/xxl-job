@@ -1,23 +1,32 @@
 package com.xxl.job.admin.core.alarm.impl;
 
+import java.nio.charset.Charset;
 import java.text.MessageFormat;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import javax.mail.internet.MimeMessage;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
+import com.alibaba.fastjson.JSON;
 import com.xxl.job.admin.core.alarm.JobAlarm;
 import com.xxl.job.admin.core.conf.XxlJobAdminConfig;
 import com.xxl.job.admin.core.model.XxlJobGroup;
 import com.xxl.job.admin.core.model.XxlJobInfo;
 import com.xxl.job.admin.core.model.XxlJobLog;
 import com.xxl.job.admin.core.util.I18nUtil;
+import com.xxl.job.admin.core.util.WXTokenUtil;
 import com.xxl.job.core.biz.model.ReturnT;
 
 /**
@@ -28,6 +37,7 @@ import com.xxl.job.core.biz.model.ReturnT;
 @Component
 public class EmailJobAlarm implements JobAlarm {
     private static Logger logger = LoggerFactory.getLogger(EmailJobAlarm.class);
+    private static String url = "https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=";
 
     /**
      * load email job alarm template
@@ -62,6 +72,7 @@ public class EmailJobAlarm implements JobAlarm {
         // send monitor email
         if (info != null && info.getAlarmEmail() != null && info.getAlarmEmail().trim().length() > 0) {
 
+            // 开始发送邮件
             // alarmContent
             String alarmContent = "Alarm Job LogId=" + jobLog.getId();
             if (jobLog.getTriggerCode() != ReturnT.SUCCESS_CODE) {
@@ -102,7 +113,50 @@ public class EmailJobAlarm implements JobAlarm {
                 }
 
             }
+            // 邮件发送结束
+
+            // 开始发送企业微信
+            String wxUsers =
+                emailSet.stream().map(s -> s.trim().replace("@sekorm.com", "")).collect(Collectors.joining("|"));
+            // 组装文本信息
+            Map<String, String> stringStringMap = new HashMap<>();
+            stringStringMap.put("title", group != null ? group.getTitle() : "null");
+            stringStringMap.put("url", "http://172.16.1.94/xxl-job-admin/");
+            stringStringMap.put("btntxt", "调度平台");
+            StringBuilder sb = new StringBuilder();
+            sb.append("<div>提示：详细信息请查xxl-job或本地日志</div>\n");
+            sb.append("日志信息：");
+            sb.append(alarmContent);
+            stringStringMap.put("description", sb.toString());
+            // 组装接收人信息
+            Map<String, Object> objectMap = new HashMap<>();
+            objectMap.put("touser", wxUsers);
+            objectMap.put("msgtype", "textcard");
+            objectMap.put("agentid", "1000024");
+            objectMap.put("textcard", stringStringMap);
+            try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
+                HttpPost httpPost = new HttpPost(url.concat(WXTokenUtil.getToken()));
+                // 拼装参数，设置编码格式
+                httpPost.setHeader("Content-Type", "application/json;charset=UTF-8");
+                StringEntity stringEntity = new StringEntity(JSON.toJSONString(objectMap), Charset.forName("UTF-8"));
+                stringEntity.setContentEncoding("UTF-8");
+                stringEntity.setContentType("application/json");
+                httpPost.setEntity(stringEntity);
+                try (CloseableHttpResponse response = httpclient.execute(httpPost)) {
+                    HttpEntity entity = response.getEntity();
+                    String msg = EntityUtils.toString(entity);
+                    // 如果errcode为0则发生成功,否则是不
+                    if (!(msg.indexOf("\"errcode\":0") != -1)) {
+                        alarmResult = false;
+                        logger.error("预警发送失败！{}", msg);
+                    }
+                }
+            } catch (Exception e) {
+                alarmResult = false;
+                logger.error("预警发送失败！", e);
+            }
         }
+        // 企业微信发送结束
 
         return alarmResult;
     }

@@ -64,8 +64,11 @@ public class XxlJobScheduler {
         // admin log report start
         JobLogReportHelper.getInstance().start();
 
-        // start job time clear
+        // admin mail time start
         JobMailTimeHelper.getInstance().start();
+
+        // admin wx token start
+        JobWXTokenHelper.getInstance().start();
 
         // start-schedule
         JobScheduleHelper.getInstance().start();
@@ -89,6 +92,12 @@ public class XxlJobScheduler {
 
         // admin fail-monitor stop
         JobFailMonitorHelper.getInstance().toStop();
+
+        // admin mail time stop
+        JobMailTimeHelper.getInstance().toStop();
+
+        // admin wx token time stop
+        JobWXTokenHelper.getInstance().toStop();
 
         // admin registry stop
         JobRegistryMonitorHelper.getInstance().toStop();
